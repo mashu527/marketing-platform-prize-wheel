@@ -30,7 +30,7 @@ public class StrategyArmoryTest {
     private IStrategyDao iStrategyDao;
     @Test
     public void test01(){
-        iStrategyArmory.assembleLotteryStrategy(100002L);
+        iStrategyArmory.assembleLotteryStrategy(100003L);
     }
 
     @Test

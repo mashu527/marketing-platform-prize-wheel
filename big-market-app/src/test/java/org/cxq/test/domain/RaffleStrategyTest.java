@@ -1,6 +1,7 @@
 package org.cxq.test.domain;
 
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.cxq.domain.strategy.model.entity.RaffleAwardEntity;
 import org.cxq.domain.strategy.model.entity.RaffleFactorEntity;
@@ -28,5 +29,18 @@ public class RaffleStrategyTest {
                 .build());
 
         log.info("抽奖奖品:{}",raffleAwardEntity);
+    }
+
+    @Test
+    public void test_raffle_center_rule_lock(){
+        RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
+                .userId("cxq")
+                .strategyId(100003L)
+                .build();
+
+        RaffleAwardEntity raffleAwardEntity = iRaffleStrategy.performRaffle(raffleFactorEntity);
+
+        log.info("请求参数：{}", JSON.toJSONString(raffleFactorEntity));
+        log.info("测试结果：{}", JSON.toJSONString(raffleAwardEntity));
     }
 }

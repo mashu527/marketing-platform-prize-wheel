@@ -8,6 +8,7 @@ import org.cxq.domain.strategy.model.entity.RaffleFactorEntity;
 import org.cxq.domain.strategy.model.entity.RuleActionEntity;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.vo.RuleLogicCheckTypeVO;
+import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
 import org.cxq.domain.strategy.service.IRaffleStrategy;
 import org.cxq.domain.strategy.service.armory.IStrategyDispatch;
@@ -58,13 +59,31 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
             }
         }
 
+        //抽取随机奖品
         Integer awardId = iStrategyDispatch.getRandomAwardId(strategyId);
+
+        //查询奖品规则 「抽奖中（拿到奖品ID时，过滤规则）、抽奖后（扣减完奖品库存后过滤，抽奖中拦截和无库存则走兜底）」
+        StrategyAwardRuleModelVO strategyAwardRuleModelVO=iStrategyRepository.queryStrategyAwardRuleModel(strategyId,awardId);
+
+        //抽奖规则过滤
+        RuleActionEntity<RuleActionEntity.RaffleCenterEntity> ruleActionCenterEntity=this.doCheckRaffleCenterLogic
+                (RaffleFactorEntity.builder().strategyId(strategyId).userId(userId).awardId(awardId).build(),
+                        strategyAwardRuleModelVO.raffleCenterRuleModelList());
+
+        if (RuleLogicCheckTypeVO.TAKE_OVER.getCode().equals(ruleActionCenterEntity.getCode())){
+            log.info("【临时日志】中奖中规则拦截，通过抽奖后规则 rule_luck_award 走兜底奖励。");
+            return RaffleAwardEntity.builder()
+                    .awardDesc("中奖中规则拦截，通过抽奖后规则 rule_luck_award 走兜底奖励。")
+                    .build();
+        }
 
         return RaffleAwardEntity.builder()
                 .awardId(awardId)
                 .build();
 
     }
+
+    protected abstract RuleActionEntity<RuleActionEntity.RaffleCenterEntity> doCheckRaffleCenterLogic(RaffleFactorEntity build, String ...logics);
 
     protected abstract RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> doCheckRaffleBeforeLogic(RaffleFactorEntity build, String ...logics);
 

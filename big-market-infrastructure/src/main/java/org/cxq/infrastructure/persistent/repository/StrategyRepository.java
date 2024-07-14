@@ -5,6 +5,7 @@ package org.cxq.infrastructure.persistent.repository;
 import org.cxq.domain.strategy.model.entity.StrategyAwardEntity;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.entity.StrategyRuleEntity;
+import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
 import org.cxq.infrastructure.persistent.dao.IStrategyAwardDao;
 import org.cxq.infrastructure.persistent.dao.IStrategyDao;
@@ -126,6 +127,15 @@ public class StrategyRepository implements IStrategyRepository {
         strategyRule.setAwardId(awardId);
         strategyRule.setRuleModel(ruleModel);
         return iStrategyDao.queryStrategyRuleValue(strategyRule);
+    }
+
+    @Override
+    public StrategyAwardRuleModelVO queryStrategyAwardRuleModel(Long strategyId, Integer awardId) {
+        StrategyAward strategyAward = new StrategyAward();
+        strategyAward.setStrategyId(strategyId);
+        strategyAward.setAwardId(awardId);
+        String ruleModels=iStrategyAwardDao.queryStrategyAwardRuleModel(strategyAward);
+        return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
     }
 
 }

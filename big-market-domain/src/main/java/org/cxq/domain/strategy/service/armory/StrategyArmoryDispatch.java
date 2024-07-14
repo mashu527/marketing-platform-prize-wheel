@@ -31,13 +31,15 @@ public class StrategyArmoryDispatch implements IStrategyArmory,IStrategyDispatch
         //权重规则配置
         StrategyEntity strategyEntity=iStrategyRepository.queryStrategyByStrategyId(strategyId);
         String ruleWeight = strategyEntity.getRuleWeight();
-        if(strategyEntity==null) return true;
+        if(ruleWeight==null) return true;
 
         StrategyRuleEntity strategyRuleEntity=iStrategyRepository.queryStrategyRule(strategyId,ruleWeight);
-        if(strategyEntity==null){
+        if(strategyRuleEntity==null){
             throw new AppException(ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getCode(),ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getInfo());
         }
 
+
+        //装配包含规则为rule_weight的概率表
         Map<String, List<Integer>> ruleWeightVauleMap = strategyRuleEntity.getRuleWeightVaules();
         Set<String> keys = ruleWeightVauleMap.keySet();
         for (String key : keys) {
