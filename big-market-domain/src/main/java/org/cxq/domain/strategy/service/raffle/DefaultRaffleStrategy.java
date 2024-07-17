@@ -11,6 +11,7 @@ import org.cxq.domain.strategy.repository.IStrategyRepository;
 import org.cxq.domain.strategy.service.armory.IStrategyArmory;
 import org.cxq.domain.strategy.service.armory.IStrategyDispatch;
 import org.cxq.domain.strategy.service.rule.ILogicFilter;
+import org.cxq.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.cxq.domain.strategy.service.rule.factory.DefaultLogicFactory;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy{
     @Resource
     private DefaultLogicFactory defaultLogicFactory;
 
-    public DefaultRaffleStrategy(IStrategyRepository iStrategyRepository, IStrategyDispatch iStrategyDispatch) {
-        super(iStrategyRepository, iStrategyDispatch);
+    public DefaultRaffleStrategy(IStrategyRepository iStrategyRepository, IStrategyDispatch iStrategyDispatch, DefaultChainFactory defaultChainFactory) {
+        super(iStrategyRepository, iStrategyDispatch,defaultChainFactory);
     }
 
 
