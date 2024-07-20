@@ -16,7 +16,7 @@ public class RuleTreeVO {
     /**
      * 规则树ID
      */
-    private Integer treeId;
+    private String treeId;
     /**
      * 规则树名称
      */
@@ -28,7 +28,7 @@ public class RuleTreeVO {
     /**
      * 规则树根节点
      */
-    private String treeRootNode;
+    private String treeRootRuleNode;
 
     /**
      * 规则树节点

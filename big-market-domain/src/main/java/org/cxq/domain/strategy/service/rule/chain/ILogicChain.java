@@ -2,6 +2,7 @@ package org.cxq.domain.strategy.service.rule.chain;
 
 
 import org.cxq.domain.strategy.service.rule.ILogicFilter;
+import org.cxq.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 
 /**
  * 责任链接口
@@ -14,6 +15,6 @@ public interface ILogicChain extends ILogicChainArmory{
      * @param strategyId
      * @return
      */
-    Integer logic(String userId,Long strategyId);
+    DefaultChainFactory.StrategyAwardVO logic(String userId, Long strategyId);
 
 }

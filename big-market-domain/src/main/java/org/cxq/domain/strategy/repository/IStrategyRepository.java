@@ -4,6 +4,7 @@ package org.cxq.domain.strategy.repository;
 import org.cxq.domain.strategy.model.entity.StrategyAwardEntity;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.entity.StrategyRuleEntity;
+import org.cxq.domain.strategy.model.vo.RuleTreeVO;
 import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 
 import java.math.BigDecimal;
@@ -13,6 +14,8 @@ import java.util.List;
 /**
  * 仓储服务接口
  */
+
+
 public interface IStrategyRepository {
     List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId);
 
@@ -34,4 +37,6 @@ public interface IStrategyRepository {
     StrategyAwardRuleModelVO queryStrategyAwardRuleModel(Long strategyId, Integer awardId);
 
     String queryStrategyRuleValue(Long strategyId, String ruleModel);
+
+    RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
 }

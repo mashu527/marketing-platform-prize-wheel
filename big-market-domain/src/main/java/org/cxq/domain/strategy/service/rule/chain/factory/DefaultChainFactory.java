@@ -1,5 +1,6 @@
 package org.cxq.domain.strategy.service.rule.chain.factory;
 
+import lombok.*;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
 import org.cxq.domain.strategy.service.rule.chain.ILogicChain;
@@ -39,4 +40,35 @@ public class DefaultChainFactory {
 
         return logicChain;
     }
+
+
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    @Builder
+    public static class StrategyAwardVO {
+        /**
+         * 奖品id
+         */
+        private Integer awardId;
+        /**
+         * 模型信息
+         */
+        private String logicModel;
+    }
+
+
+    @AllArgsConstructor
+    @Getter
+    public enum LogicModel {
+        RULE_DEFAULT("rule_default","默认抽奖"),
+        RULE_BACKLIST("rule_backlist","黑名单抽奖"),
+        RULE_WEIGHT("rule_weight","权重规则"),
+        ;
+
+        private final String code;
+        private final String info;
+    }
+
 }

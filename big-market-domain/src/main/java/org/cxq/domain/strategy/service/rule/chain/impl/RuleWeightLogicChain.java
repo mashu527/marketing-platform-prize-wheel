@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
 import org.cxq.domain.strategy.service.armory.IStrategyDispatch;
 import org.cxq.domain.strategy.service.rule.AbstractLogicChain;
+import org.cxq.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.cxq.types.common.Constants;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
     public Long userScore=0L;
 
     @Override
-    public Integer logic(String userId, Long strategyId) {
+    public DefaultChainFactory.StrategyAwardVO logic(String userId, Long strategyId) {
         log.info("规则过滤-权重范围 userId:{} strategyId:{} ruleModel:{}",userId,strategyId,ruleModel());
 
         String ruleValue = iStrategyRepository.queryStrategyRuleValue(strategyId, ruleModel());
@@ -47,7 +48,10 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
         if(nextValue!=null){
             Integer awardId=iStrategyDispatch.getRandomAwardId(strategyId,analyticalValueGroup.get(nextValue));
             log.info("规则过滤-权重范围 userId:{} strategyId:{} ruleModel:{} awardId:{}",userId,strategyId,ruleModel(),awardId);
-            return awardId;
+            return DefaultChainFactory.StrategyAwardVO.builder()
+                    .awardId(awardId)
+                    .logicModel(ruleModel())
+                    .build();
         }
 
         //过滤其他责任链
@@ -57,7 +61,7 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
 
     @Override
     protected String ruleModel() {
-        return "rule_weight";
+        return DefaultChainFactory.LogicModel.RULE_WEIGHT.getCode();
     }
 
     private Map<Long, String> getAnalyticalValue(String ruleValue) {
