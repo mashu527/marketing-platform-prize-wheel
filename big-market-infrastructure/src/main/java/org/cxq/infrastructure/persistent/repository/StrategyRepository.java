@@ -2,6 +2,7 @@ package org.cxq.infrastructure.persistent.repository;
 
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.cxq.domain.strategy.model.entity.StrategyAwardEntity;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.entity.StrategyRuleEntity;
@@ -11,6 +12,8 @@ import org.cxq.infrastructure.persistent.dao.*;
 import org.cxq.infrastructure.persistent.po.*;
 import org.cxq.infrastructure.persistent.redis.IRedisService;
 import org.cxq.types.common.Constants;
+import org.redisson.api.RBlockingQueue;
+import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RMap;
 import org.springframework.stereotype.Repository;
 
@@ -20,10 +23,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 策略仓储实现
  */
+@Slf4j
 @Repository
 public class StrategyRepository implements IStrategyRepository {
     @Resource
@@ -146,6 +151,8 @@ public class StrategyRepository implements IStrategyRepository {
         return queryStrategyRuleValue(strategy,null,ruleModel);
     }
 
+
+
     @Override
     public RuleTreeVO queryRuleTreeVOByTreeId(String treeId) {
         // 优先从缓存获取
@@ -197,6 +204,51 @@ public class StrategyRepository implements IStrategyRepository {
 
         iRedisService.setValue(cacheKey, ruleTreeVODB);
         return ruleTreeVODB;
+    }
+
+    @Override
+    public void cacheStrategyAwardCount(String cacheKey, Integer awardCount) {
+        Long cacheAwardCount = iRedisService.getAtomicLong(cacheKey);
+        if (cacheAwardCount==null) return ;
+        iRedisService.setAtomicLong(cacheKey,awardCount);
+    }
+
+    @Override
+    public Boolean subtractionAwardStock(String cacheKey) {
+        long surplus = iRedisService.decr(cacheKey);
+        if(surplus<0){
+            iRedisService.setValue(cacheKey,0);
+            return false;
+        }
+        String lockKey=cacheKey + Constants.UNDERLINE + surplus;
+        Boolean lock = iRedisService.setNx(lockKey);
+        if(!lock){
+            log.info("策略奖品库存加锁失败{}",lockKey);
+        }
+        return lock;
+    }
+
+    @Override
+    public void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO) {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_QUEUE_KEY;
+        RBlockingQueue<StrategyAwardStockKeyVO> blockingQueue = iRedisService.getBlockingQueue(cacheKey);
+        RDelayedQueue<StrategyAwardStockKeyVO> delayedQueue = iRedisService.getDelayedQueue(blockingQueue);
+        delayedQueue.offer(strategyAwardStockKeyVO,3, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public StrategyAwardStockKeyVO takeQueueValuee() {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_QUEUE_KEY;
+        RBlockingQueue<StrategyAwardStockKeyVO> destinationQueue = iRedisService.getBlockingQueue(cacheKey);
+        return destinationQueue.poll();
+    }
+
+    @Override
+    public void updateStrategyAwardStock(Long strategyId, Integer awardId) {
+        StrategyAward strategyAward = new StrategyAward();
+        strategyAward.setStrategyId(strategyId);
+        strategyAward.setAwardId(awardId);
+        iStrategyAwardDao.updateStrategyAwardStock(strategyAward);
     }
 
 }

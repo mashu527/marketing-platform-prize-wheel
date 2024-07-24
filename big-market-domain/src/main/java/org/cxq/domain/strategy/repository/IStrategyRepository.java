@@ -6,6 +6,7 @@ import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.entity.StrategyRuleEntity;
 import org.cxq.domain.strategy.model.vo.RuleTreeVO;
 import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
+import org.cxq.domain.strategy.model.vo.StrategyAwardStockKeyVO;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -39,4 +40,14 @@ public interface IStrategyRepository {
     String queryStrategyRuleValue(Long strategyId, String ruleModel);
 
     RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
+
+    void cacheStrategyAwardCount(String cacheKey, Integer awardCount);
+
+    Boolean subtractionAwardStock(String cacheKey);
+
+    void awardStockConsumeSendQueue(StrategyAwardStockKeyVO build);
+
+    StrategyAwardStockKeyVO takeQueueValuee();
+
+    void updateStrategyAwardStock(Long strategyId, Integer awardId);
 }

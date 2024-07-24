@@ -6,6 +6,7 @@ import org.cxq.domain.strategy.model.entity.StrategyAwardEntity;
 import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.entity.StrategyRuleEntity;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
+import org.cxq.types.common.Constants;
 import org.cxq.types.enums.ResponseCode;
 import org.cxq.types.exception.AppException;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,13 @@ public class StrategyArmoryDispatch implements IStrategyArmory,IStrategyDispatch
     public boolean assembleLotteryStrategy(Long strategyId) {
         //查询策略配置
         List<StrategyAwardEntity> strategyAwardEntities=iStrategyRepository.queryStrategyAwardList(strategyId);
+
+        for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
+            Integer awardId = strategyAwardEntity.getAwardId();
+            Integer awardCount = strategyAwardEntity.getAwardCount();
+            cacheStrategyAwardCount(strategyId,awardId,awardCount);
+        }
+        
         //调用方法进行装配
         assembleLotteryStrategy(String.valueOf(strategyId),strategyAwardEntities);
 
@@ -50,6 +58,11 @@ public class StrategyArmoryDispatch implements IStrategyArmory,IStrategyDispatch
         }
 
         return true;
+    }
+
+    private void cacheStrategyAwardCount(Long strategyId,Integer awardId, Integer awardCount) {
+        String cacheKey= Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY+strategyId+Constants.UNDERLINE+awardId;
+        iStrategyRepository.cacheStrategyAwardCount(cacheKey,awardCount);
     }
 
 
@@ -110,5 +123,11 @@ public class StrategyArmoryDispatch implements IStrategyArmory,IStrategyDispatch
         String key=String.valueOf(strategyId).concat("_").concat(ruleWeightValue);
         int rateRange=iStrategyRepository.getRateRange(key);
         return iStrategyRepository.getStrategyAwardAssemble(key,new SecureRandom().nextInt(rateRange));
+    }
+
+    @Override
+    public Boolean subtractionAwardStock(Long strategyId, Integer awardId) {
+        String cacheKey= Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY+strategyId+Constants.UNDERLINE+awardId;
+        return iStrategyRepository.subtractionAwardStock(cacheKey);
     }
 }

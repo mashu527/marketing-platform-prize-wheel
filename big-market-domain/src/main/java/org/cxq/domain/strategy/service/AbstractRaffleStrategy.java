@@ -1,4 +1,4 @@
-package org.cxq.domain.strategy.service.raffle;
+package org.cxq.domain.strategy.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,7 @@ import org.cxq.domain.strategy.model.entity.StrategyEntity;
 import org.cxq.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
+import org.cxq.domain.strategy.service.IRaffleStock;
 import org.cxq.domain.strategy.service.IRaffleStrategy;
 import org.cxq.domain.strategy.service.armory.IStrategyDispatch;
 import org.cxq.domain.strategy.service.rule.chain.ILogicChain;
@@ -21,7 +22,7 @@ import org.cxq.types.exception.AppException;
 
 @Slf4j
 //@AllArgsConstructor
-public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
+public abstract class AbstractRaffleStrategy implements IRaffleStrategy, IRaffleStock {
 
     protected IStrategyRepository iStrategyRepository;
     protected IStrategyDispatch iStrategyDispatch;
@@ -38,6 +39,12 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         this.defaultTreeFactory = defaultTreeFactory;
     }
 
+
+    /**
+     * 先进行前置规则处理，即责任链中过滤的权重和黑名单规则，然后在进行规则树过滤处理
+     * @param raffleFactorEntity
+     * @return
+     */
     @Override
     public RaffleAwardEntity performRaffle(RaffleFactorEntity raffleFactorEntity) {
         // 1. 参数校验

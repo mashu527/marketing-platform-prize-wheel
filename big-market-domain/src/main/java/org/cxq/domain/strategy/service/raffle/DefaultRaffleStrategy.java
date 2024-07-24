@@ -2,33 +2,21 @@ package org.cxq.domain.strategy.service.raffle;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.cxq.domain.strategy.model.entity.RaffleFactorEntity;
-import org.cxq.domain.strategy.model.entity.RuleActionEntity;
-import org.cxq.domain.strategy.model.entity.RuleMatterEntity;
-import org.cxq.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.cxq.domain.strategy.model.vo.RuleTreeVO;
 import org.cxq.domain.strategy.model.vo.StrategyAwardRuleModelVO;
+import org.cxq.domain.strategy.model.vo.StrategyAwardStockKeyVO;
 import org.cxq.domain.strategy.repository.IStrategyRepository;
-import org.cxq.domain.strategy.service.armory.IStrategyArmory;
+import org.cxq.domain.strategy.service.AbstractRaffleStrategy;
 import org.cxq.domain.strategy.service.armory.IStrategyDispatch;
-import org.cxq.domain.strategy.service.rule.ILogicFilter;
 import org.cxq.domain.strategy.service.rule.chain.ILogicChain;
 import org.cxq.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
-import org.cxq.domain.strategy.service.rule.factory.DefaultLogicFactory;
 import org.cxq.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import org.cxq.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Service
 @Slf4j
-public class DefaultRaffleStrategy extends AbstractRaffleStrategy{
+public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
 
     public DefaultRaffleStrategy(IStrategyRepository iStrategyRepository, IStrategyDispatch iStrategyDispatch, DefaultChainFactory defaultChainFactory, DefaultTreeFactory defaultTreeFactory) {
         super(iStrategyRepository, iStrategyDispatch, defaultChainFactory, defaultTreeFactory);
@@ -41,6 +29,16 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy{
         return iLogicChain.logic(userId,strategyId);
     }
 
+
+    /**
+     * 1.先根据奖品id和策略id去查询该奖品的规则模型，若没有配置相应的规则模型，直接返回抽奖结果
+     * 2.调用queryRuleTreeVOByTreeId方法根据规则模型获取RuleTreeVO对象
+     * 3.初始化规则树，对对应变量赋值，再调用process方法执行决策
+     * @param userId
+     * @param strategyId
+     * @param awardId
+     * @return
+     */
     @Override
     public DefaultTreeFactory.StrategyAwardVO raffleLogicTree(String userId, Long strategyId, Integer awardId) {
         StrategyAwardRuleModelVO strategyAwardRuleModelVO = iStrategyRepository.queryStrategyAwardRuleModel(strategyId, awardId);
@@ -57,6 +55,18 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy{
         IDecisionTreeEngine treeEngine = defaultTreeFactory.openLogicTree(ruleTreeVO);
         return treeEngine.process(userId, strategyId, awardId);
     }
+
+    @Override
+    public StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException {
+        return iStrategyRepository.takeQueueValuee();
+    }
+
+    @Override
+    public void UpdateStrategyAwardStock(Long strategyId, Integer awardId) {
+        iStrategyRepository.updateStrategyAwardStock(strategyId,awardId);
+    }
+
+
 
 
 //    @Override
