@@ -35,7 +35,7 @@ public class StrategyArmoryTest {
 
     @Test
     public void test02(){
-        Integer randomAwardId = iStrategyDispatch.getRandomAwardId(100002L);
+        Integer randomAwardId = iStrategyDispatch.getRandomAwardId(100006L);
         log.info("奖品名称id:{}",randomAwardId);
     }
 

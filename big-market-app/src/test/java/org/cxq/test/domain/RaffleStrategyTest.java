@@ -50,7 +50,7 @@ public class RaffleStrategyTest {
     public void test_raffle_center_rule_lock(){
         RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
                 .userId("cxq")
-                .strategyId(100002L)
+                .strategyId(100006L)
                 .build();
 
         RaffleAwardEntity raffleAwardEntity = iRaffleStrategy.performRaffle(raffleFactorEntity);
