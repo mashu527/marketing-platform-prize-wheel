@@ -1,4 +1,4 @@
-package org.cxq.test.domain;
+package org.cxq.test.domain.strategy;
 
 
 import lombok.extern.slf4j.Slf4j;

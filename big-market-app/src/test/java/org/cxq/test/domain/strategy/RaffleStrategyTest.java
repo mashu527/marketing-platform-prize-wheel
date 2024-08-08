@@ -1,4 +1,4 @@
-package org.cxq.test.domain;
+package org.cxq.test.domain.strategy;
 
 
 import com.alibaba.fastjson.JSON;
@@ -7,7 +7,6 @@ import org.cxq.domain.strategy.model.entity.RaffleAwardEntity;
 import org.cxq.domain.strategy.model.entity.RaffleFactorEntity;
 import org.cxq.domain.strategy.service.IRaffleStrategy;
 import org.cxq.domain.strategy.service.armory.IStrategyArmory;
-import org.cxq.domain.strategy.service.raffle.DefaultRaffleStrategy;
 import org.cxq.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
 import org.cxq.domain.strategy.service.rule.impl.RuleWeightLogicFilter;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.cxq.test.domain;
+package org.cxq.test.domain.strategy;
 
 
 import com.alibaba.fastjson2.JSON;

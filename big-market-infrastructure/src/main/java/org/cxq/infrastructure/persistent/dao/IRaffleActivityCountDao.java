@@ -1,6 +1,7 @@
 package org.cxq.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.cxq.infrastructure.persistent.po.RaffleActivityCount;
 
 /**
  *
@@ -9,4 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityCountDao {
+
+    RaffleActivityCount queryRaffleActivityCountByActivityCountId(Long activityCountId);
 }
