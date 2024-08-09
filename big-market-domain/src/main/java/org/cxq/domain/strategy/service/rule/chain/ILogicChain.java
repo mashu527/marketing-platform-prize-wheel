@@ -1,7 +1,6 @@
 package org.cxq.domain.strategy.service.rule.chain;
 
 
-import org.cxq.domain.strategy.service.rule.ILogicFilter;
 import org.cxq.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 
 /**

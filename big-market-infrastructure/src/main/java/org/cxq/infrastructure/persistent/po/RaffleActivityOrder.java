@@ -22,6 +22,9 @@ public class RaffleActivityOrder {
      */
     private String userId;
 
+    /** 商品SKU - activity + activity count */
+    private Long sku;
+
     /**
      * 活动ID
      */
@@ -66,6 +69,9 @@ public class RaffleActivityOrder {
      * 订单状态（not_used、used、expire）
      */
     private String state;
+
+    /** 幂等业务单号，外部谁充值谁透传，这样来保证幂等（多次调用也能确保结果唯一，不会多次充值）。 */
+    private String outBusinessNo;
 
     /**
      * 创建时间
