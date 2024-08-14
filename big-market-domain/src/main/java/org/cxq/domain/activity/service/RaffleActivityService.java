@@ -3,6 +3,7 @@ package org.cxq.domain.activity.service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cxq.domain.activity.model.aggregate.CreateOrderAggregate;
 import org.cxq.domain.activity.model.entity.*;
+import org.cxq.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import org.cxq.domain.activity.model.valobj.OrderStateVO;
 import org.cxq.domain.activity.repository.IActivityRepository;
 import org.cxq.domain.activity.service.rule.factory.DefaultActivityChainFactory;
@@ -16,7 +17,7 @@ import java.util.Date;
  * @create 2024-03-16 08:41
  */
 @Service
-public class RaffleActivityService extends AbstractRaffleActivity{
+public class RaffleActivityService extends AbstractRaffleActivity implements ISkuStock{
 
     public RaffleActivityService(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
         super(activityRepository, defaultActivityChainFactory);
@@ -56,4 +57,23 @@ public class RaffleActivityService extends AbstractRaffleActivity{
                 .build();
     }
 
+    @Override
+    public ActivitySkuStockKeyVO takeQueueValue() throws InterruptedException {
+        return activityRepository.takeQueueVaule();
+    }
+
+    @Override
+    public void clearQueueValue() {
+        activityRepository.clearQueueValue();
+    }
+
+    @Override
+    public void updateActivitySkuStock(Long sku) {
+        activityRepository.updateActivitySkuStock(sku);
+    }
+
+    @Override
+    public void clearActivitySkuStock(Long sku) {
+        activityRepository.clearActivitySkuStock(sku);
+    }
 }
