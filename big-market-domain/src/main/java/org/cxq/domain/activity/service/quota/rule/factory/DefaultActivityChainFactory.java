@@ -1,9 +1,9 @@
-package org.cxq.domain.activity.service.rule.factory;
+package org.cxq.domain.activity.service.quota.rule.factory;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.cxq.domain.activity.service.rule.IActionChain;
+import org.cxq.domain.activity.service.quota.rule.IActionChain;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.cxq.domain.activity.service.rule;
+package org.cxq.domain.activity.service.quota.rule;
 
 
 import org.cxq.domain.activity.model.entity.ActivityCountEntity;

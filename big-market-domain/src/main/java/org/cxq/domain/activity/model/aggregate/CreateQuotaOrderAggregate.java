@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.cxq.domain.activity.model.entity.ActivityAccountEntity;
 import org.cxq.domain.activity.model.entity.ActivityOrderEntity;
 
 
@@ -16,7 +15,7 @@ import org.cxq.domain.activity.model.entity.ActivityOrderEntity;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateOrderAggregate {
+public class CreateQuotaOrderAggregate {
 
     /**
      * 用户ID

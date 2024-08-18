@@ -3,7 +3,7 @@ package org.cxq.trigger.job;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cxq.domain.activity.model.valobj.ActivitySkuStockKeyVO;
-import org.cxq.domain.activity.service.ISkuStock;
+import org.cxq.domain.activity.service.IRaffleActivitySkuStockService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 public class UpdateActivitySkuStockJob {
 
     @Resource
-    private ISkuStock iSkuStock;
+    private IRaffleActivitySkuStockService iSkuStock;
 
 
     @Scheduled(cron = "0/5 * * * * ?")

@@ -1,6 +1,9 @@
 package org.cxq.infrastructure.persistent.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -9,7 +12,10 @@ import java.util.Date;
  * @description 抽奖活动账户表 持久化对象
  * @create 2024-03-02 13:15
  */
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RaffleActivityAccount {
 
     /**

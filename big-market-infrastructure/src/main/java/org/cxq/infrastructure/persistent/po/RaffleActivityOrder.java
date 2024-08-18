@@ -1,6 +1,9 @@
 package org.cxq.infrastructure.persistent.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -10,6 +13,9 @@ import java.util.Date;
  * @create 2024-03-02 13:21
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class RaffleActivityOrder {
 
     /**

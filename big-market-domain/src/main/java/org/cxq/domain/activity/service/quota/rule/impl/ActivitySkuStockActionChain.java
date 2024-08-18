@@ -1,4 +1,4 @@
-package org.cxq.domain.activity.service.rule.impl;
+package org.cxq.domain.activity.service.quota.rule.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cxq.domain.activity.model.entity.ActivityCountEntity;
@@ -7,7 +7,7 @@ import org.cxq.domain.activity.model.entity.ActivitySkuEntity;
 import org.cxq.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import org.cxq.domain.activity.repository.IActivityRepository;
 import org.cxq.domain.activity.service.armory.IActivityDispatch;
-import org.cxq.domain.activity.service.rule.AbstractActionChain;
+import org.cxq.domain.activity.service.quota.rule.AbstractActionChain;
 import org.cxq.types.enums.ResponseCode;
 import org.cxq.types.exception.AppException;
 import org.springframework.stereotype.Component;

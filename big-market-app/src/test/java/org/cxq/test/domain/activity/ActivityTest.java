@@ -1,12 +1,13 @@
 package org.cxq.test.domain.activity;
 
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.cxq.domain.activity.model.entity.PartakeRaffleActivityEntity;
 import org.cxq.domain.activity.model.entity.SkuRechargeEntity;
-import org.cxq.domain.activity.repository.IActivityRepository;
-import org.cxq.domain.activity.service.IRaffleOrder;
+import org.cxq.domain.activity.model.entity.UserRaffleOrderEntity;
+import org.cxq.domain.activity.service.IRaffleActivityAccountQuotaService;
+import org.cxq.domain.activity.service.IRaffleActivityPartakeService;
 import org.cxq.domain.activity.service.armory.IActivityArmory;
 import org.cxq.types.exception.AppException;
 import org.junit.Test;
@@ -23,10 +24,12 @@ import java.util.concurrent.CountDownLatch;
 public class ActivityTest {
 
     @Resource
-    private IRaffleOrder iRaffleOrder;
+    private IRaffleActivityAccountQuotaService iRaffleOrder;
 
     @Resource
     private IActivityArmory iActivityArmory;
+    @Resource
+    private IRaffleActivityPartakeService iRaffleActivityPartakeService;
 
     @Test
     public void setup(){
@@ -52,5 +55,16 @@ public class ActivityTest {
         }
 
         new CountDownLatch(1).await();
+    }
+
+
+    @Test
+    public void testPartakeService(){
+        PartakeRaffleActivityEntity partakeRaffleActivityEntity = new PartakeRaffleActivityEntity().builder()
+                .userId("xiaofuge")
+                .activityId(100301L).build();
+
+        UserRaffleOrderEntity order = iRaffleActivityPartakeService.createOrder(partakeRaffleActivityEntity);
+        log.info("生成用户抽奖订单:{}",order);
     }
 }
