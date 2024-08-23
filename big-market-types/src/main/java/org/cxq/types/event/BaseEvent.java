@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @description 基础时间
+ * @description 基础事件
  * @create 2024-03-30 12:42
  */
 @Data

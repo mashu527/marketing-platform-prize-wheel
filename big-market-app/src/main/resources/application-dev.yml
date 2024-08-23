@@ -26,7 +26,7 @@ spring:
         prefetch: 1
     topic:
       activity_sku_stock_zero: activity_sku_stock_zero
-
+      send_award: send_award
 
 # 线程池配置
 thread:

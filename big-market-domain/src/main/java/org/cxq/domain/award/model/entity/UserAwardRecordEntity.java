@@ -1,20 +1,25 @@
-package org.cxq.infrastructure.persistent.po;
+package org.cxq.domain.award.model.entity;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.cxq.domain.award.model.valobj.AwardStateVO;
 
 import java.util.Date;
 
-/**
- *
- * @description 用户中奖记录表
- * @create 2024-04-03 15:30
- */
-@Data
-public class UserAwardRecord {
 
-    /** 自增ID */
-    private String id;
+/**
+ * 用户中奖记录实体对象
+ */
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserAwardRecordEntity {
+
     /** 用户ID */
     private String userId;
     /** 活动ID */
@@ -30,10 +35,5 @@ public class UserAwardRecord {
     /** 中奖时间 */
     private Date awardTime;
     /** 奖品状态；create-创建、completed-发奖完成 */
-    private String awardState;
-    /** 创建时间 */
-    private Date createTime;
-    /** 更新时间 */
-    private Date updateTime;
-
+    private AwardStateVO awardState;
 }
