@@ -28,6 +28,12 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRa
     }
 
 
+    /**
+     * 责任链过滤权重和黑名单
+     * @param userId
+     * @param strategyId
+     * @return
+     */
     @Override
     public DefaultChainFactory.StrategyAwardVO raffleLogicChain(String userId, Long strategyId) {
         ILogicChain iLogicChain = defaultChainFactory.openLogicChain(strategyId);

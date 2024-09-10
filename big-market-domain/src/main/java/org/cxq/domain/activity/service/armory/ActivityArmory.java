@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 @Slf4j
@@ -26,6 +27,22 @@ public class ActivityArmory implements IActivityArmory,IActivityDispatch{
         //活动次数预热【查询时预热到缓存中】
         iActivityRepository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
 
+
+        return true;
+    }
+
+    @Override
+    public boolean assembleActivitySkuByActivityId(Long activityId) {
+        List<ActivitySkuEntity> activitySkuEntityList=iActivityRepository.queryActivitySkuListByActivityId(activityId);
+
+        for (ActivitySkuEntity activitySkuEntity : activitySkuEntityList) {
+            cacheActivitySkuStockCount(activitySkuEntity.getSku(),activitySkuEntity.getStockCountSurplus());
+            //预热活动次数【查询时预热到缓存】
+            iActivityRepository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
+        }
+
+        //预热活动【查询时预热到缓存】
+        iActivityRepository.queryRaffleActivityByActivityId(activityId);
 
         return true;
     }

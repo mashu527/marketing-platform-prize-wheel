@@ -24,6 +24,12 @@
               )
     </insert>
 
+    <update id="updateUserRaffleOrderStateUsed" parameterType="org.cxq.infrastructure.persistent.po.UserRaffleOrder">
+        update user_raffle_order
+        set order_state='used',update_time=now()
+        where user_id=#{userId} and order_id=#{orderId} and order_state='create'
+    </update>
+
     <select id="queryNoUsedRaffleOrder" parameterType="org.cxq.infrastructure.persistent.po.UserRaffleOrder" resultMap="dataMap">
         select user_id, activity_id, activity_name, strategy_id, order_id, order_time, order_state
         from user_raffle_order

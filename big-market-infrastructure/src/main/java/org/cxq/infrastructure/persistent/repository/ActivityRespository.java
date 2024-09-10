@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -431,6 +432,25 @@ public class ActivityRespository implements IActivityRepository {
                 .dayCount(raffleActivityAccountDayRes.getDayCount())
                 .dayCountSurplus(raffleActivityAccountDayRes.getDayCountSurplus())
                 .build();
+    }
+
+    @Override
+    public List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId) {
+        return iRaffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);
+    }
+
+    @Override
+    public Integer queryTodayUserRaffleCount(String userId, Long strategyId) {
+        Long activityId=iRaffleActivityDao.queryActivityIdByStrategyId(strategyId);
+        RaffleActivityAccountDay raffleActivityAccountDayReq = new RaffleActivityAccountDay();
+        raffleActivityAccountDayReq.setUserId(userId);
+        raffleActivityAccountDayReq.setActivityId(activityId);
+        raffleActivityAccountDayReq.setDay(raffleActivityAccountDayReq.getCurrentDay());
+
+        RaffleActivityAccountDay raffleActivityAccountDay = iRaffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
+
+        //已参与抽奖次数
+        return  raffleActivityAccountDay.getDayCount()-raffleActivityAccountDay.getDayCountSurplus();
     }
 
 
